@@ -48,10 +48,21 @@ export default {
   },
   async mounted () {
     try {
-      const response = await axios.get('https://reqres.in/api/users?page=1')
-      this.tasks = response.data.data
+      const response = await axios.get('http://localhost:3000/data')
+      this.tasks = response.data
     } catch (error) {
       console.log(error)
+    }
+    if(localStorage.tasks) {
+      this.tasks = JSON.parse(localStorage.tasks)
+  }
+  },
+  watch: {
+    tasks: {
+      handler(newtask) {
+      localStorage.tasks = JSON.stringify(newtask)
+      },
+      deep: true 
     }
   },
   methods: {
