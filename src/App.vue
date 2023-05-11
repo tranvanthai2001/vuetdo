@@ -1,6 +1,7 @@
 <template>
   <div>
-    <todoapp/>
+    <router-view />
+
   </div>
 </template>
 

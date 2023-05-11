@@ -16,8 +16,10 @@
     </tr>
   </thead>
   <tbody>
-    <tr v-for="(task, index) in tasks" :key="index">
-      <th>{{ task.first_name }}</th>
+    <tr v-for="(task, index) in tasks" :key="index" v-bind:class="{completed: task.completed}">
+      <input type="checkbox" 
+          v-model="task.completed"/>
+      <th >{{ task.first_name }}</th>
       <td>{{ task.last_name }}</td>
       <td>
         <div>
@@ -33,10 +35,14 @@
     
   </tbody>
 </table>
+<router-link to="/test">
+  <button>router</button>
+</router-link>
   </div>
 </template>
 
 <script>
+
 import axios from 'axios'
 export default {
   data() {
@@ -65,6 +71,11 @@ export default {
       deep: true 
     }
   },
+  computed: {
+    isComplete() {
+      return this.tasks.filter(task => task.completed).length;
+    }
+  },
   methods: {
     addTask() {
       if(this.name.length ===0) return;
@@ -85,12 +96,13 @@ export default {
     updateTask(index) {
       this.name = this.tasks[index].first_name,
         this.edit= index
-      
-    }
+    },
   }
 }
 </script>
 
 <style>
-
+.completed {
+  text-decoration: line-through;
+}
 </style>
