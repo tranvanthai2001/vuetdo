@@ -1,15 +1,15 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import todoapp from './components/todoapp.vue'
-import InputSearch from './components/InputSearch.vue'
+import TodoApp from './components/TodoApp.vue'
+import AddTask from './components/AddTask.vue'
 
 const routes = [
     {
         path: '/',
-        component: todoapp
+        component: TodoApp
     },
     {
         path: '/ip',
-        component: InputSearch
+        component: AddTask
     },
 ]
 

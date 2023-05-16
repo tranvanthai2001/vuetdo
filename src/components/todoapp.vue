@@ -1,66 +1,30 @@
 <template>
   <div class="container">
     <h2 class="text-center mt-5">Todo App</h2>
-    <div class="d-flex">
-      <input
-        v-model="name"
-        type="text"
-        placeholder="new item"
-        class="form-control"
-      />
-      <InputSearch @button-add="addTask" />
-    </div>
-    <table class="table caption-top">
-      <caption>
-        List of users
-      </caption>
-      <thead>
-        <tr>
-          <th scope="col">Task</th>
-          <th scope="col">Status</th>
-          <th scope="col">#</th>
-          <th scope="col">#</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr
-          v-for="(task, index) in tasks"
-          :key="index"
-          v-bind:class="{ completed: task.completed }"
-        >
-          <input type="checkbox" v-model="task.completed" />
-
-          <th>{{ task.first_name }}</th>
-          <td>{{ task.last_name }}</td>
-          <td>
-            <div>
-              <span @click="updateTask(index)" class="fa fa-pen"></span>
-            </div>
-          </td>
-          <td>
-            <div @click="deleteTask(index)">
-              <span class="fa fa-trash"></span>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <add-task v-on:add-task="addTask" />
+    <task-list
+      :tasks="tasks"
+      v-on:delete-task="deleteTask"
+      v-on:update-task="updateTask"
+    />
   </div>
 </template>
 
 <script>
-import InputSearch from "./InputSearch.vue";
+import AddTask from "./AddTask.vue";
+import TaskList from "./TaskList.vue";
 import axios from "axios";
+
 export default {
+  components: {
+    AddTask,
+    TaskList,
+  },
   data() {
     return {
-      name: "",
       edit: null,
       tasks: [],
     };
-  },
-  components: {
-    InputSearch,
   },
   async mounted() {
     try {
@@ -88,23 +52,23 @@ export default {
     },
   },
   methods: {
-    addTask() {
-      if (this.name.length === 0) return;
+    addTask(name) {
+      if (name.length === 0) return;
       if (this.edit === null) {
         this.tasks.push({
-          first_name: this.name,
-          last_name: this.name,
+          first_name: name,
+          last_name: name,
         });
       } else {
-        (this.tasks[this.edit].first_name = this.name), (this.edit = null);
+        (this.tasks[this.edit].first_name = name), (this.edit = null);
       }
-      this.name = "";
     },
     deleteTask(index) {
       this.tasks.splice(index, 1);
     },
     updateTask(index) {
-      (this.name = this.tasks[index].first_name), (this.edit = index);
+      this.edit = index;
+      this.name = this.tasks[index].first_name;
     },
   },
 };
